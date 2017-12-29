@@ -12,7 +12,7 @@ var cert = process.env.CERT;
 var privateKey = process.env.PRIVATE_KEY;
 var ggHost = process.env.GG_HOST;
 var iotHost = process.env.IOT_HOST;
-var thingArn = process.env.thingArn;
+var thingArn = process.env.THING_ARN;
 
 configExample.coreThing.ggHost = ggHost;
 configExample.coreThing.iotHost = iotHost;
