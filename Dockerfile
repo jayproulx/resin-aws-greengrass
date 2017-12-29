@@ -54,4 +54,4 @@ RUN python2.7 --version
 #RUN cd /app && unzip greengrass-dependency-checker.zip && cd greengrass-dependency-checker-GGCv1.3.0 && ./check_ggc_dependencies
 
 # Configure greengrassd and start
-CMD ["nodejs6.10", "/app/start-greengrass.js"]
+CMD ["nodejs6.10", "start-greengrass.js"]
