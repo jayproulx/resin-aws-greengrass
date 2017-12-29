@@ -7,9 +7,13 @@ RUN sudo rpi-update b81a11258fc911170b40a0b09bbd63c84bc5ad59
 # Install standard dependencies
 RUN apt-get install unzip curl sqlite3 binutils cgroupfs-mount python2.7 wget build-essential libssl-dev -y
 
-RUN echo "Installing NVM"
-RUN curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash \
-	&& export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
+WORKDIR /app
+
+# Install NodeJS via NVM
+ENV NVM_DIR="/app/.nvm"
+ADD https://raw.githubusercontent.com/creationix/nvm/master/install.sh /app/nvm-install.sh
+RUN bash /app/nvm-install.sh \
+	&& [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
 	&& nvm install v6.10 \
 	&& ln -s $(nvm which v6.10) /usr/bin/nodejs6.10
 
@@ -23,7 +27,6 @@ RUN sudo update-alternatives --install /usr/bin/javac javac /usr/java/jdk1.8.0_1
 RUN sudo ln -s /usr/bin/java /usr/bin/java8
 
 # Install ARM7 Greengrass for RPi
-RUN mkdir /app
 ADD resin/greengrass-linux-armv7l-1.3.0.tar.gz /app/
 
 # Add greengrassd to the path
@@ -34,8 +37,6 @@ ADD http://www.symantec.com/content/en/us/enterprise/verisign/roots/VeriSign-Cla
 
 # Mount cgroup directories
 RUN sudo cgroupfs-mount
-#COPY resin/cgroupfs-mount /app/cgroupfs-mount
-#RUN sudo bash /app/cgroupfs-mount
 
 # Add ggc_user and _group
 RUN sudo adduser --system ggc_user
@@ -46,9 +47,8 @@ RUN java8 -version
 #RUN python --version
 
 # Check dependencies to make sure we're A-OK
-ADD https://raw.githubusercontent.com/aws-samples/aws-greengrass-samples/master/greengrass-dependency-checker-GGCv1.3.0.zip /app/greengrass-dependency-checker.zip
-#ADD resin/greengrass-dependency-checker.zip /app/greengrass-dependency-checker.zip
-RUN cd /app && unzip greengrass-dependency-checker.zip && cd greengrass-dependency-checker-GGCv1.3.0 && ./check_ggc_dependencies
+#ADD https://raw.githubusercontent.com/aws-samples/aws-greengrass-samples/master/greengrass-dependency-checker-GGCv1.3.0.zip /app/greengrass-dependency-checker.zip
+#RUN cd /app && unzip greengrass-dependency-checker.zip && cd greengrass-dependency-checker-GGCv1.3.0 && ./check_ggc_dependencies
 
 # Start greengrass daemon
 CMD ["greengrassd", "start"]
