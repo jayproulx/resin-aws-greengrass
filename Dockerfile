@@ -7,7 +7,7 @@ RUN sudo rpi-update b81a11258fc911170b40a0b09bbd63c84bc5ad59
 # Install standard dependencies
 RUN apt-get install unzip curl sqlite3 binutils cgroupfs-mount wget build-essential libssl-dev python2.7 -y
 
-RUN python --version
+RUN ln -s $(which python2.7) /usr/bin/python
 
 WORKDIR /app
 
