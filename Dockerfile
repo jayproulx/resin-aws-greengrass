@@ -20,7 +20,6 @@ RUN bash /app/nvm-install.sh \
 	&& ln -s $(nvm which v6.10) /usr/bin/nodejs6.10
 
 # Install Oracle JDK 8
-#ADD resin/jdk-8u151-linux-arm32-vfp-hflt.tar.gz /usr/java/
 RUN wget --no-check-certificate --quiet -c --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u151-b12/e758a0de34e24606bca991d704f6dcbf/jdk-8u151-linux-arm32-vfp-hflt.tar.gz
 RUN mkdir /usr/java
 RUN tar -zxf jdk-8u151-linux-arm32-vfp-hflt.tar.gz -C /usr/java
@@ -38,7 +37,8 @@ ENV PATH="/app/greengrass/ggc/core:${PATH}"
 ADD http://www.symantec.com/content/en/us/enterprise/verisign/roots/VeriSign-Class%203-Public-Primary-Certification-Authority-G5.pem /app/greengrass/certs/root.ca.pem
 
 # Mount cgroup directories
-RUN sudo cgroupfs-mount
+# This fails when building the Dockerfile, but cgroup subsystems are available when running this container on the Raspberry Pi
+# RUN sudo cgroupfs-mount
 
 # Add ggc_user and _group
 RUN sudo adduser --system ggc_user
@@ -46,9 +46,10 @@ RUN sudo addgroup --system ggc_group
 
 RUN nodejs6.10 --version
 RUN java8 -version
-#RUN python --version
+RUN python2.7 --version
 
 # Check dependencies to make sure we're A-OK
+# cgroup checks fail when building the Dockerfile locally, but pass when this image is started on a Raspberry Pi (3)
 #ADD https://raw.githubusercontent.com/aws-samples/aws-greengrass-samples/master/greengrass-dependency-checker-GGCv1.3.0.zip /app/greengrass-dependency-checker.zip
 #RUN cd /app && unzip greengrass-dependency-checker.zip && cd greengrass-dependency-checker-GGCv1.3.0 && ./check_ggc_dependencies
 
