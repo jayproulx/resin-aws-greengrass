@@ -1,7 +1,7 @@
 #!/usr/bin/env nodejs6.10
 
 var fs = require('fs'), spawn = require('child_process').spawn;
-var configExample = require('example.config.json');
+var configExample = require('./example.config.json');
 
 var certsPath = "/app/greengrass/certs";
 var certPath = `${certsPath}/cert.pem`;
