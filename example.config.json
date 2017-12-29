@@ -1,0 +1,17 @@
+{
+  "coreThing" : {
+    "caPath" : "root.ca.pem",
+    "certPath" : "cert.pem",
+    "keyPath" : "private.key",
+    "thingArn" : "",
+    "iotHost" : "",
+    "ggHost" : "",
+    "keepAlive" : 600
+  },
+  "runtime" : {
+    "cgroup" : {
+      "useSystemd" : "no"
+    }
+  },
+  "managedRespawn" : false
+}

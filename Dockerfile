@@ -53,5 +53,5 @@ RUN python2.7 --version
 #ADD https://raw.githubusercontent.com/aws-samples/aws-greengrass-samples/master/greengrass-dependency-checker-GGCv1.3.0.zip /app/greengrass-dependency-checker.zip
 #RUN cd /app && unzip greengrass-dependency-checker.zip && cd greengrass-dependency-checker-GGCv1.3.0 && ./check_ggc_dependencies
 
-# Start greengrass daemon
-CMD ["greengrassd", "start"]
+# Configure greengrassd and start
+CMD ["nodejs6.10", "/app/start-greengrass.js"]
